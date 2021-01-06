@@ -1,0 +1,6 @@
+exports.TRANSACTION_TYPES = [
+  'CARD',
+  'VIRTUAL_ACCOUNT',
+  'EWALLET',
+  'RETAIL_OUTLET'
+]

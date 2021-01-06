@@ -1,9 +1,12 @@
-const express = require('express')
-const router = express.Router()
+const transactionRoutes = require('./transactionRoutes')
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' })
-})
+module.exports = function (app) {
+  app.get('/api', function (req, res, next) {
+    res.status(200).json({
+      message: 'Call the api using the required routes'
+    })
+  })
 
-module.exports = router
+  // We will prefix the all our routes with /api
+  app.use('/api', transactionRoutes)
+}

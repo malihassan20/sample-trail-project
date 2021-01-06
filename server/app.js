@@ -1,11 +1,10 @@
 const createError = require('http-errors')
 const express = require('express')
-// var path = require("path");
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const cors = require('cors')
-
-const indexRouter = require('./routes/index')
+const mongoose = require('mongoose')
+const dbConfig = require('./config').dbConfig
 
 const app = express()
 app.use(cors())
@@ -14,13 +13,25 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
-// app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/', indexRouter)
+// Initialize the api routes
+require('./routes')(app)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
+})
+
+// do the db connection
+mongoose.connect(dbConfig.config.dbURI, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+})
+mongoose.connection.once('open', function () {
+  console.log('Connected to the Database.')
+})
+mongoose.connection.on('error', function (error) {
+  console.log('Mongoose Connection Error : ' + error)
 })
 
 // error handler
