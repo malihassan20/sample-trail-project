@@ -10,8 +10,19 @@ exports.getTransactionList = function (req, res) {
     filter.type = query.type
   }
 
-  if (query.date) {
-    filter.date = query.date
+  if (query.startDate && query.endDate) {
+    filter.timestamp = {
+      $gte: query.startDate,
+      $lte: query.endDate
+    }
+  } else if (query.startDate) {
+    filter.timestamp = {
+      $gte: query.startDate
+    }
+  } else if (query.endDate) {
+    filter.timestamp = {
+      $lte: query.endDate
+    }
   }
 
   async.waterfall(
@@ -31,10 +42,14 @@ exports.getTransactionList = function (req, res) {
 
         if (query.skip) {
           options.skip = parseInt(query.skip)
+        } else {
+          options.skip = 0
         }
 
         if (query.limit) {
           options.limit = parseInt(query.limit)
+        } else {
+          options.limit = 30
         }
 
         Models.transaction
@@ -49,9 +64,9 @@ exports.getTransactionList = function (req, res) {
       }
     ],
     function (err, result) {
-      if (err) return res.send(err)
+      if (err) return res.status(200).send({ error: err })
       else {
-        return res.send(result)
+        return res.status(200).send(result)
       }
     }
   )

@@ -17,7 +17,7 @@ const schema = new Schema({
     enum: constants.TRANSACTION_TYPES,
     required: [true, 'Transaction type is required']
   },
-  timestamp: { type: Date, default: new Date().toISOString() }
+  timestamp: { type: String, default: new Date().toISOString() }
 })
 
 module.exports = mongoose.model('Transaction', schema, 'transactions')

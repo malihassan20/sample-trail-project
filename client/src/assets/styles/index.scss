@@ -1,0 +1,14 @@
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+
+.table {
+  width: 100%;
+  overflow-y: auto;
+  max-width: 1200px;
+}
+
+.form-check-input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
