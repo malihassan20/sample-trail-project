@@ -5,11 +5,11 @@ const constants = require('../config').constants
 
 const schema = new Schema({
   businessId: {
-    type: Schema.ObjectId,
-    ref: 'business'
+    type: Schema.Types.ObjectId,
+    ref: 'Business'
   },
   amount: {
-    type: Schema.Decimal128,
+    type: Schema.Types.Decimal128,
     required: [true, 'Amount is required']
   },
   type: {
@@ -17,7 +17,7 @@ const schema = new Schema({
     enum: constants.TRANSACTION_TYPES,
     required: [true, 'Transaction type is required']
   },
-  timestamp: Date.now().toISOString()
+  timestamp: { type: Date, default: new Date().toISOString() }
 })
 
-module.exports = mongoose.model('Transaction', schema)
+module.exports = mongoose.model('Transaction', schema, 'transactions')
