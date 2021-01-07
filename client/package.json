@@ -24,12 +24,6 @@
     "lint": "eslint src/**/*.js src/**/*.jsx",
     "lint-check": "eslint ."
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -47,6 +41,7 @@
     "eslint": "^7.15.0",
     "eslint-config-prettier": "^7.0.0",
     "eslint-plugin-prettier": "^3.2.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "react-test-renderer": "^17.0.1"
   }
 }

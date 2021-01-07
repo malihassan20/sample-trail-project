@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Fragment, useState, useEffect, useRef } from 'react';
-import { CSVLink } from 'react-csv';
+import { Fragment, useState, useEffect } from 'react';
+import { CSVDownload } from 'react-csv';
 
 import Layout from './components/layout';
 import CustomPagination from './components/pagination';
@@ -10,12 +10,12 @@ import { getTransactionList } from './apiCalls/transactionApi';
 import { TRANSACTION_TYPES, PAGINATION_DATA_LIMIT } from './constants';
 
 const App = () => {
-  const csvDownRef = useRef(null);
   const [data, setData] = useState([]);
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [excelSheetData, setExcelSheetData] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
   const [checkedCheckboxes, setCheckedCheckboxes] = useState({});
+  const [activateDownload, setActivateDownload] = useState(false);
   const [filters, setFilters] = useState({
     skip: 0,
     limit: PAGINATION_DATA_LIMIT
@@ -48,7 +48,6 @@ const App = () => {
 
     getTransactionList(query)
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           setData(res.data.data);
           setTotalTransactions(res.data.count);
@@ -61,6 +60,16 @@ const App = () => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (activateDownload === true) {
+      setActivateDownload(false);
+    }
+  }, [activateDownload]);
 
   const paginationUpdated = (query) => {
     let newFilter = Object.assign({}, filters);
@@ -93,10 +102,6 @@ const App = () => {
     setFilters(newFilter);
     getData(newFilter);
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const saveSelectedExcelSheetData = async (item, value) => {
     let newData = selectedData;
@@ -142,12 +147,10 @@ const App = () => {
         });
 
         setExcelSheetData(excelArray);
-        // after setting the excel sheet data trigger the csv download component click event
-        csvDownRef.current.link.click();
+        setActivateDownload(true);
       } else if (selectedData.length > 0) {
-        console.log(selectedData);
         setExcelSheetData(selectedData);
-        csvDownRef.current.link.click();
+        setActivateDownload(true);
       }
     }
   };
@@ -166,14 +169,14 @@ const App = () => {
         <button className="btn btn-primary mb-4" onClick={() => exportData()}>
           Export Selected
         </button>
-
-        <CSVLink
-          style={{ display: 'none' }}
-          ref={csvDownRef}
-          filename={'Transactions_List.csv'}
-          data={excelSheetData}
-          headers={excelSheetHeader}
-        ></CSVLink>
+        {activateDownload === true && (
+          <CSVDownload
+            filename={'Transactions_List.csv'}
+            data={excelSheetData}
+            headers={excelSheetHeader}
+            target="_blank"
+          />
+        )}
       </div>
       <TopFilters filterData={filterData} />
       {totalTransactions === 0 && <p>No Transaction Found</p>}
