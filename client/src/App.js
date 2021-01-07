@@ -29,6 +29,8 @@ const App = () => {
           setTotalBusiness(res.data.count);
           setSelectedData([]);
           setCheckedCheckboxes({});
+        } else {
+          toggle();
         }
       })
       .catch((err) => {

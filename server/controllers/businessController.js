@@ -40,7 +40,7 @@ exports.getBusinessList = function (req, res) {
       }
     ],
     function (err, result) {
-      if (err) return res.status(200).send({ error: err })
+      if (err) return res.status(500).send({ error: err })
       else {
         return res.status(200).send(result)
       }
@@ -86,7 +86,7 @@ exports.getTransactionList = function (req, res) {
     .find(filter, {}, options)
     .populate('businessId')
     .exec(function (err, data) {
-      if (err) return res.status(200).send({ error: err })
+      if (err) return res.status(500).send({ error: err })
       else {
         return res.status(200).send(data)
       }

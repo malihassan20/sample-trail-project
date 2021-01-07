@@ -78,6 +78,9 @@ const TopFilters = ({ selectedBussinesses, allBusinesses }) => {
               setModalText('No Transaction Found');
               toggle();
             }
+          } else {
+            setModalText('Some error occurred. Please try again!');
+            toggle();
           }
         })
         .catch((err) => {
