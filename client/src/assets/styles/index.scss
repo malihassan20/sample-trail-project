@@ -1,10 +1,14 @@
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 
-.table {
+.table-container {
   width: 100%;
   overflow-y: auto;
   max-width: 1200px;
+
+  .form-check-input {
+    position: relative;
+  }
 }
 
 .form-check-input {
@@ -19,4 +23,32 @@
 
 .modal-footer {
   border-top: none;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.page-item {
+  .page-link {
+    padding: 0.4rem 0.75rem;
+
+    @media (max-width: 350px) {
+      padding: 0.4rem 0.6rem;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .select-styles {
+    margin-right: 15px;
+    max-width: 492px;
+  }
+}
+
+@media (max-width: 500px) {
+  .select-styles {
+    margin-left: 15px;
+    max-width: 471px;
+  }
 }

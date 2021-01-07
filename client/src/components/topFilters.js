@@ -135,7 +135,7 @@ const TopFilters = ({ selectedBussinesses, allBusinesses }) => {
       <select
         value={selectedType}
         onChange={handleTypeFilter}
-        className="form-control col-md-3 col-sm-12 mb-4"
+        className="form-control col-md-3 col-sm-12 mb-4 select-styles"
       >
         <option value="All">All</option>
         {renderTypes()}
@@ -177,7 +177,7 @@ const TopFilters = ({ selectedBussinesses, allBusinesses }) => {
       >
         Export Selected
       </button>
-      <button className="btn btn-primary mb-4" onClick={clearFilters}>
+      <button className="btn btn-primary mb-4 mr-3" onClick={clearFilters}>
         Clear
       </button>
       {activateDownload === true && (

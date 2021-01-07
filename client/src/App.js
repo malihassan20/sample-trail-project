@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Fragment, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 import Layout from './components/layout';
@@ -75,11 +75,11 @@ const App = () => {
       />
       {totalBusiness === 0 && <p>No Business Found</p>}
       {totalBusiness > 0 && (
-        <Fragment>
+        <div className="row table-container">
           <table className="table mb-b">
             <thead>
               <tr>
-                <th></th>
+                <th>Selected</th>
                 <th>Business ID</th>
                 <th>Business Name</th>
                 <th>Business Email</th>
@@ -88,7 +88,7 @@ const App = () => {
             <tbody>
               {businesses.map((item, index) => (
                 <tr key={index}>
-                  <td>
+                  <td className="d-flex justify-content-center">
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -103,12 +103,14 @@ const App = () => {
               ))}
             </tbody>
           </table>
-          <CustomPagination
-            skip={filters.skip}
-            totalData={totalBusiness}
-            paginationUpdated={paginationUpdated}
-          />
-        </Fragment>
+          <div className="w-100 d-flex justify-content-end">
+            <CustomPagination
+              skip={filters.skip}
+              totalData={totalBusiness}
+              paginationUpdated={paginationUpdated}
+            />
+          </div>
+        </div>
       )}
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}></ModalHeader>
