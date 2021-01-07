@@ -18,7 +18,6 @@ const TopFilters = ({ filterData }) => {
       endDate: convertToUTCTimezone(endDate)
     }
   ) => {
-    console.log(convertToUTCTimezone(startDate));
     filterData(filters);
   };
 
