@@ -1,4 +1,4 @@
-const transactionRoutes = require('./transactionRoutes')
+const businessRoutes = require('./businessRoutes')
 
 module.exports = function (app) {
   app.get('/api', function (req, res, next) {
@@ -8,5 +8,5 @@ module.exports = function (app) {
   })
 
   // We will prefix the all our routes with /api
-  app.use('/api', transactionRoutes)
+  app.use('/api', businessRoutes)
 }

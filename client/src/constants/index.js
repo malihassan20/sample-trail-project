@@ -5,4 +5,4 @@ export const TRANSACTION_TYPES = {
   RETAIL_OUTLET: 'RETAIL OUTLET'
 };
 
-export const PAGINATION_DATA_LIMIT = 30;
+export const PAGINATION_DATA_LIMIT = 10;

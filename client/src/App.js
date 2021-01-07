@@ -1,126 +1,63 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Fragment, useState, useEffect } from 'react';
-import { CSVDownload } from 'react-csv';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 import Layout from './components/layout';
 import CustomPagination from './components/pagination';
 import TopFilters from './components/topFilters';
 
-import { getTransactionList } from './apiCalls/transactionApi';
-import { TRANSACTION_TYPES, PAGINATION_DATA_LIMIT } from './constants';
+import { getBusinessList } from './apiCalls/businessApi';
+import { PAGINATION_DATA_LIMIT } from './constants';
 
 const App = () => {
-  const [data, setData] = useState([]);
-  const [totalTransactions, setTotalTransactions] = useState(0);
-  const [excelSheetData, setExcelSheetData] = useState([]);
+  const [businesses, setBusinesses] = useState([]);
+  const [totalBusiness, setTotalBusiness] = useState(0);
   const [selectedData, setSelectedData] = useState([]);
   const [checkedCheckboxes, setCheckedCheckboxes] = useState({});
-  const [activateDownload, setActivateDownload] = useState(false);
+  const [modal, setModal] = useState(false);
   const [filters, setFilters] = useState({
     skip: 0,
     limit: PAGINATION_DATA_LIMIT
   });
 
-  const excelSheetHeader = [
-    { label: 'ID', key: 'id' },
-    { label: 'Business ID', key: 'businessId' },
-    { label: 'Business Name', key: 'name' },
-    { label: 'Business Email', key: 'email' },
-    { label: 'Type', key: 'type' },
-    { label: 'Amount', key: 'amount' },
-    { label: 'Timestamp', key: 'timestamp' }
-  ];
-
-  const getData = (_query = filters) => {
+  const getBusinessData = (_query = filters) => {
     let query = '?skip=' + _query.skip + '&limit=' + _query.limit;
-
-    if (_query.type) {
-      query += '&type=' + _query.type;
-    }
-
-    if (_query.startDate) {
-      query += '&startDate=' + _query.startDate;
-    }
-
-    if (_query.endDate) {
-      query += '&endDate=' + _query.endDate;
-    }
-
-    getTransactionList(query)
+    getBusinessList(query)
       .then((res) => {
         if (res.status === 200) {
-          setData(res.data.data);
-          setTotalTransactions(res.data.count);
+          setBusinesses(res.data.data);
+          setTotalBusiness(res.data.count);
           setSelectedData([]);
-          setExcelSheetData([]);
           setCheckedCheckboxes({});
         }
       })
       .catch((err) => {
-        console.log(err);
+        toggle();
       });
   };
 
   useEffect(() => {
-    getData();
+    getBusinessData();
   }, []);
 
-  useEffect(() => {
-    if (activateDownload === true) {
-      setActivateDownload(false);
-    }
-  }, [activateDownload]);
+  const toggle = () => setModal(!modal);
 
   const paginationUpdated = (query) => {
     let newFilter = Object.assign({}, filters);
     newFilter.skip = query;
     setFilters(newFilter);
-    getData(newFilter);
+    getBusinessData(newFilter);
   };
 
-  const filterData = (_query) => {
-    let newFilter = Object.assign({}, filters);
-    newFilter.skip = 0;
-
-    if (_query.type !== 'All') {
-      newFilter.type = _query.type;
-    } else if (newFilter.type) {
-      delete newFilter.type;
-    }
-
-    if (_query.startDate !== null) {
-      newFilter.startDate = _query.startDate;
-    } else if (_query.startDate === null) {
-      delete newFilter.startDate;
-    }
-
-    if (_query.endDate !== null) {
-      newFilter.endDate = _query.endDate;
-    } else if (_query.endDate === null) {
-      delete newFilter.endDate;
-    }
-    setFilters(newFilter);
-    getData(newFilter);
-  };
-
-  const saveSelectedExcelSheetData = async (item, value) => {
+  const saveSelectedData = async (item, value) => {
     let newData = selectedData;
     let newCheckBoxesData = Object.assign({}, checkedCheckboxes);
 
     if (value === true) {
-      let e = {};
-      e.id = item._id;
-      e.businessId = item.businessId._id;
-      e.name = item.businessId.name;
-      e.email = item.businessId.email;
-      e.type = TRANSACTION_TYPES[item.type];
-      e.amount = item.amount;
-      e.timestamp = item.timestamp;
-
-      newData.push(e);
       newCheckBoxesData[item._id] = true;
+      newData.push(item._id);
     } else {
-      newData = selectedData.filter((itm) => itm.id !== item._id);
+      newData = selectedData.filter((itm) => itm !== item._id);
       delete newCheckBoxesData[item._id];
     }
 
@@ -128,59 +65,16 @@ const App = () => {
     setCheckedCheckboxes(newCheckBoxesData);
   };
 
-  const exportData = async (all = false) => {
-    if (totalTransactions > 0) {
-      if (all === true) {
-        const excelArray = [];
-
-        await data.forEach(function (item) {
-          let e = {};
-          e.id = item._id;
-          e.businessId = item.businessId._id;
-          e.name = item.businessId.name;
-          e.email = item.businessId.email;
-          e.type = TRANSACTION_TYPES[item.type];
-          e.amount = item.amount;
-          e.timestamp = item.timestamp;
-
-          excelArray.push(e);
-        });
-
-        setExcelSheetData(excelArray);
-        setActivateDownload(true);
-      } else if (selectedData.length > 0) {
-        setExcelSheetData(selectedData);
-        setActivateDownload(true);
-      }
-    }
-  };
-
   return (
     <Layout>
       <h2>Transactions List</h2>
       <br />
-      <div className="row justify-content-end">
-        <button
-          className="btn btn-primary mr-3 mb-4"
-          onClick={() => exportData(true)}
-        >
-          Export All
-        </button>
-        <button className="btn btn-primary mb-4" onClick={() => exportData()}>
-          Export Selected
-        </button>
-        {activateDownload === true && (
-          <CSVDownload
-            filename={'Transactions_List.csv'}
-            data={excelSheetData}
-            headers={excelSheetHeader}
-            target="_blank"
-          />
-        )}
-      </div>
-      <TopFilters filterData={filterData} />
-      {totalTransactions === 0 && <p>No Transaction Found</p>}
-      {totalTransactions > 0 && (
+      <TopFilters
+        allBusinesses={businesses}
+        selectedBussinesses={selectedData}
+      />
+      {totalBusiness === 0 && <p>No Business Found</p>}
+      {totalBusiness > 0 && (
         <Fragment>
           <table className="table mb-b">
             <thead>
@@ -189,41 +83,46 @@ const App = () => {
                 <th>Business ID</th>
                 <th>Business Name</th>
                 <th>Business Email</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Timestamp</th>
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {businesses.map((item, index) => (
                 <tr key={index}>
                   <td>
                     <input
                       className="form-check-input"
                       type="checkbox"
                       checked={checkedCheckboxes[item._id] ? true : false}
-                      onChange={(e) =>
-                        saveSelectedExcelSheetData(item, e.target.checked)
-                      }
+                      onChange={(e) => saveSelectedData(item, e.target.checked)}
                     ></input>
                   </td>
-                  <td>{item.businessId._id}</td>
-                  <td>{item.businessId.email}</td>
-                  <td>{item.businessId.name}</td>
-                  <td>{TRANSACTION_TYPES[item.type]}</td>
-                  <td>{item.amount}</td>
-                  <td>{item.timestamp}</td>
+                  <td>{item._id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           <CustomPagination
             skip={filters.skip}
-            totalData={totalTransactions}
+            totalData={totalBusiness}
             paginationUpdated={paginationUpdated}
           />
         </Fragment>
       )}
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}></ModalHeader>
+        <ModalBody>
+          <div className="d-flex flex-column justify-content-center align-items-center pb-4">
+            <h3 className="text-center mb-4">
+              Some error occurred. Please try again!
+            </h3>
+            <button className="btn btn-primary pl-4 pr-4" onClick={toggle}>
+              Close
+            </button>
+          </div>
+        </ModalBody>
+      </Modal>
     </Layout>
   );
 };

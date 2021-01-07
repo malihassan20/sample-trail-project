@@ -1,3 +1,3 @@
 module.exports = {
-  transactionController: require('./transactionController')
+  businessController: require('./businessController')
 }
