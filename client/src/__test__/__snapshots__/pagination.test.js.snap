@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomPagination component matches the snapshot 1`] = `
+<nav
+  aria-label="Page navigation example"
+>
+  <ul
+    className="pagination flex flex-row justify-content-end w-full"
+  >
+    <li
+      className="page-item disabled"
+    >
+      <a
+        aria-disabled="true"
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+      >
+        <span
+          aria-hidden="true"
+        >
+          «
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item disabled"
+    >
+      <a
+        aria-disabled="true"
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+      >
+        <span
+          aria-hidden="true"
+        >
+          ‹
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item active"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+      >
+        <span
+          aria-hidden="true"
+        >
+          1
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item disabled"
+    >
+      <a
+        aria-disabled="true"
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+      >
+        <span
+          aria-hidden="true"
+        >
+          ›
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item disabled"
+    >
+      <a
+        aria-disabled="true"
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+      >
+        <span
+          aria-hidden="true"
+        >
+          »
+        </span>
+      </a>
+    </li>
+  </ul>
+</nav>
+`;

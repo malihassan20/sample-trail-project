@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App component matches the snapshot 1`] = `
+<div
+  className="container mt-4 pt-4 mb-4 pb-4 pl-4 pr-4"
+>
+  <h2>
+    Transactions List
+  </h2>
+  <br />
+  <div
+    className="row justify-content-end"
+  >
+    <select
+      className="form-control col-md-3 col-sm-12 mb-4 select-styles"
+      onChange={[Function]}
+      value="All"
+    >
+      <option
+        value="All"
+      >
+        All
+      </option>
+      <option
+        value="CARD"
+      >
+        CARD
+      </option>
+      <option
+        value="VIRTUAL_ACCOUNT"
+      >
+        VIRTUAL ACCOUNT
+      </option>
+      <option
+        value="EWALLET"
+      >
+        EWALLET
+      </option>
+      <option
+        value="RETAIL_OUTLET"
+      >
+        RETAIL OUTLET
+      </option>
+    </select>
+    <div
+      className="col-md-2 col-sm-12 mb-4"
+    >
+      <div
+        className="react-datepicker-wrapper"
+      >
+        <div
+          className="react-datepicker__input-container"
+        >
+          <input
+            className="form-control"
+            onChange={[Function]}
+            onClick={[Function]}
+            placeholder="Start Date"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="col-md-2 col-sm-12 mb-4"
+    >
+      <div
+        className="react-datepicker-wrapper"
+      >
+        <div
+          className="react-datepicker__input-container"
+        >
+          <input
+            className="form-control"
+            onChange={[Function]}
+            onClick={[Function]}
+            placeholder="End Date"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <button
+      className="btn btn-primary mr-3 mb-4"
+      onClick={[Function]}
+    >
+      Export All
+    </button>
+    <button
+      className="btn btn-primary mb-4 mr-3"
+      onClick={[Function]}
+    >
+      Export Selected
+    </button>
+    <button
+      className="btn btn-primary mb-4 mr-3"
+      onClick={[Function]}
+    >
+      Clear
+    </button>
+  </div>
+  <p>
+    No Business Found
+  </p>
+</div>
+`;

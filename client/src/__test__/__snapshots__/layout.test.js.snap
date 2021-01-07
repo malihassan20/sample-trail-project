@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout component matches the snapshot 1`] = `
+<div
+  className="container mt-4 pt-4 mb-4 pb-4 pl-4 pr-4"
+/>
+`;
