@@ -15,6 +15,7 @@ const App = () => {
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [excelSheetData, setExcelSheetData] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
+  const [checkedCheckboxes, setCheckedCheckboxes] = useState({});
   const [filters, setFilters] = useState({
     skip: 0,
     limit: PAGINATION_DATA_LIMIT
@@ -51,6 +52,9 @@ const App = () => {
         if (res.status === 200) {
           setData(res.data.data);
           setTotalTransactions(res.data.count);
+          setSelectedData([]);
+          setExcelSheetData([]);
+          setCheckedCheckboxes({});
         }
       })
       .catch((err) => {
@@ -96,6 +100,7 @@ const App = () => {
 
   const saveSelectedExcelSheetData = async (item, value) => {
     let newData = selectedData;
+    let newCheckBoxesData = Object.assign({}, checkedCheckboxes);
 
     if (value === true) {
       let e = {};
@@ -108,11 +113,14 @@ const App = () => {
       e.timestamp = item.timestamp;
 
       newData.push(e);
+      newCheckBoxesData[item._id] = true;
     } else {
       newData = selectedData.filter((itm) => itm.id !== item._id);
+      delete newCheckBoxesData[item._id];
     }
 
     setSelectedData(newData);
+    setCheckedCheckboxes(newCheckBoxesData);
   };
 
   const exportData = async (all = false) => {
@@ -190,6 +198,7 @@ const App = () => {
                     <input
                       className="form-check-input"
                       type="checkbox"
+                      checked={checkedCheckboxes[item._id] ? true : false}
                       onChange={(e) =>
                         saveSelectedExcelSheetData(item, e.target.checked)
                       }
