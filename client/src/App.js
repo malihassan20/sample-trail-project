@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 import Layout from './components/layout';
@@ -75,42 +75,46 @@ const App = () => {
       />
       {totalBusiness === 0 && <p>No Business Found</p>}
       {totalBusiness > 0 && (
-        <div className="row table-container">
-          <table className="table mb-b">
-            <thead>
-              <tr>
-                <th>Selected</th>
-                <th>Business ID</th>
-                <th>Business Name</th>
-                <th>Business Email</th>
-              </tr>
-            </thead>
-            <tbody>
-              {businesses.map((item, index) => (
-                <tr key={index}>
-                  <td className="d-flex justify-content-center">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      checked={checkedCheckboxes[item._id] ? true : false}
-                      onChange={(e) => saveSelectedData(item, e.target.checked)}
-                    ></input>
-                  </td>
-                  <td>{item._id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.email}</td>
+        <Fragment>
+          <div className="row table-container">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Selected</th>
+                  <th>Business ID</th>
+                  <th>Business Name</th>
+                  <th>Business Email</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="w-100 d-flex justify-content-end">
+              </thead>
+              <tbody>
+                {businesses.map((item, index) => (
+                  <tr key={index}>
+                    <td className="d-flex justify-content-center">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        checked={checkedCheckboxes[item._id] ? true : false}
+                        onChange={(e) =>
+                          saveSelectedData(item, e.target.checked)
+                        }
+                      ></input>
+                    </td>
+                    <td>{item._id}</td>
+                    <td>{item.name}</td>
+                    <td>{item.email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="w-100 d-flex justify-content-end mt-4 mt-md-0">
             <CustomPagination
               skip={filters.skip}
               totalData={totalBusiness}
               paginationUpdated={paginationUpdated}
             />
           </div>
-        </div>
+        </Fragment>
       )}
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}></ModalHeader>
