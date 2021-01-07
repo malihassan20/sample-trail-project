@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
 import { CSVDownload } from 'react-csv';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
@@ -122,15 +122,18 @@ const TopFilters = ({ selectedBussinesses, allBusinesses }) => {
     setEndDate(null);
   };
 
-  const CustomDateInput = ({ value, onClick, onChange, placeholder }) => (
-    <input
-      type="text"
-      value={value}
-      className="form-control"
-      onClick={onClick}
-      onChange={onChange}
-      placeholder={placeholder}
-    ></input>
+  const CustomDateInput = forwardRef(
+    ({ value, onClick, onChange, placeholder }, ref) => (
+      <input
+        ref={ref}
+        type="text"
+        value={value}
+        className="form-control"
+        onClick={onClick}
+        onChange={onChange}
+        placeholder={placeholder}
+      ></input>
+    )
   );
 
   return (
