@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { TRANSACTION_TYPES } from '../constants';
+import { convertToUTCTimezone } from '../utils';
 
 const TopFilters = ({ filterData }) => {
   const [selectedType, setSelectedType] = useState('All');
@@ -13,10 +14,11 @@ const TopFilters = ({ filterData }) => {
   const applyFilters = (
     filters = {
       type: selectedType,
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString()
+      startDate: convertToUTCTimezone(startDate),
+      endDate: convertToUTCTimezone(endDate)
     }
   ) => {
+    console.log(convertToUTCTimezone(startDate));
     filterData(filters);
   };
 
