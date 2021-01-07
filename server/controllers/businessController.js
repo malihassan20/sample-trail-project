@@ -14,7 +14,10 @@ exports.getBusinessList = function (req, res) {
       },
       function (count, callback) {
         const options = {
-          lean: true
+          lean: true,
+          sort: {
+            name: 1
+          }
         }
 
         const query = req.query
@@ -79,7 +82,10 @@ exports.getTransactionList = function (req, res) {
   }
 
   const options = {
-    lean: true
+    lean: true,
+    sort: {
+      timestamp: 1
+    }
   }
 
   Models.transaction
